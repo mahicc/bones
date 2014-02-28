@@ -179,5 +179,86 @@ function bones_wpsearch($form) {
 	return $form;
 } // don't remove this bracket!
 
+function year_shortcode() {
+	return date('Y');
+}
+add_shortcode('year', 'year_shortcode');
 
-?>
+
+/* Register a Custom Post Type (Slide) */
+add_action('init', 'slide_init');
+function slide_init() {
+	$labels = array(
+		'name' => _x('Slides', 'post type general name'),
+		'singular_name' => _x('Slide', 'post type singular name'),
+		'add_new' => _x('Add New', 'slide'),
+		'add_new_item' => __('Add New Slide'),
+		'edit_item' => __('Edit Slide'),
+		'new_item' => __('New Slide'),
+		'view_item' => __('View Slide'),
+		'search_items' => __('Search Slides'),
+		'not_found' => __('No slides found'),
+		'not_found_in_trash' => __('No slides found in Trash'), 
+		'parent_item_colon' => '',
+		'menu_name' => 'Slides'
+	);
+	$args = array(
+		'labels' => $labels,
+		'public' => true,
+		'publicly_queryable' => true,
+		'show_ui' => true, 
+		'show_in_menu' => true, 
+		'query_var' => true,
+		'rewrite' => true,
+		'capability_type' => 'post',
+		'has_archive' => true, 
+		'hierarchical' => false,
+		'menu_position' => 22,
+		'supports' => array('title', 'editor', 'thumbnail')
+	); 
+	register_post_type('slide', $args);
+}
+
+/* Register a Custom Post Type (Snippets) */
+add_action('init', 'Snippet_init');
+function Snippet_init() {
+	$labels = array(
+		'name' => _x('Snippets', 'post type general name'),
+		'singular_name' => _x('Snippet', 'post type singular name'),
+		'add_new' => _x('Add New', 'Snippet'),
+		'add_new_item' => __('Add New Snippet'),
+		'edit_item' => __('Edit Snippet'),
+		'new_item' => __('New Snippet'),
+		'view_item' => __('View Snippet'),
+		'search_items' => __('Search Snippets'),
+		'not_found' => __('No Snippets found'),
+		'not_found_in_trash' => __('No Snippets found in Trash'), 
+		'parent_item_colon' => '',
+		'menu_name' => 'Snippets'
+	);
+	$args = array(
+		'labels' => $labels,
+		'public' => true,
+		'publicly_queryable' => true,
+		'show_ui' => true, 
+		'show_in_menu' => true, 
+		'query_var' => true,
+		'rewrite' => true,
+		'capability_type' => 'post',
+		'has_archive' => true, 
+		'hierarchical' => false,
+		'menu_position' => 21,
+		'supports' => array('title', 'editor', 'thumbnail')
+	); 
+	register_post_type('Snippet', $args);
+}
+
+/* Return a Snippet, Filter Shortcodes */
+function get_snippet($name) {
+	$snippet = get_page_by_title($name,'ARRAY_N','Snippet');
+	if (!empty($snippet)) {
+		echo do_shortcode($snippet[4]);
+	}
+}
+
+
